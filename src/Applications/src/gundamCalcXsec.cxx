@@ -259,6 +259,8 @@ int main(int argc, char** argv){
             LogAlert << par.getFullTitle() << ": is fixed to nominal " << nominalValue
                      << " (post-fit was " << par.getParameterValue() << ")" << std::endl;
             par.setPriorValue( nominalValue );
+            // moveParametersToPrior() skips fixed pars, so the value itself must be moved as well
+            par.setParameterValue( nominalValue );
             par.setIsFixed(true);
           }
         }
