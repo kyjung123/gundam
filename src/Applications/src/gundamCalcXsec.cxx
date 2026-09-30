@@ -234,7 +234,7 @@ int main(int argc, char** argv){
 
   bool TurnRecoOnlyOff = clParser.isOptionTriggered("TurnRecoOnlyOff");
   if(TurnRecoOnlyOff){
-    LogAlert << "--TurnRecoOnlyOff is set, so we will fix reco-only dials to 1.0 and fix it" << std::endl;
+    LogAlert << "--TurnRecoOnlyOff is set, so we will fix reco-only dials to their nominal (config prior) values" << std::endl;
   }
   if( not clParser.isOptionTriggered("usePreFit") and fitterRootFile != nullptr ){
 
@@ -252,10 +252,13 @@ int main(int argc, char** argv){
 
         for( auto& par : parSet.getParameterList() ){
           if( not par.isEnabled() ){ continue; }
+          // config prior = nominal value where the dial weight is 1 (Norm dial: 1, sigma-unit Spline: 0)
+          double nominalValue{ par.getPriorValue() };
           par.setPriorValue( par.getParameterValue() );
           if(IsRecoOnlySet && TurnRecoOnlyOff){
-            LogAlert << par.getFullTitle() << ": is fixed to 1.0" << std::endl;
-            par.setPriorValue( 1.0 );
+            LogAlert << par.getFullTitle() << ": is fixed to nominal " << nominalValue
+                     << " (post-fit was " << par.getParameterValue() << ")" << std::endl;
+            par.setPriorValue( nominalValue );
             par.setIsFixed(true);
           }
         }
