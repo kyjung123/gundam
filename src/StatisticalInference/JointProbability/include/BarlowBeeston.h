@@ -36,7 +36,7 @@ namespace JointProbability{
     const double predVal = std::max(pred_,std::sqrt(std::numeric_limits<double>::min()));
     const double mcUncert = std::max(err_,std::numeric_limits<double>::min());
 
-    _buf_.rel_var = mcUncert / TMath::Sq(predVal);
+    _buf_.rel_var = TMath::Sq(mcUncert / predVal);
     _buf_.b       = (predVal * _buf_.rel_var) - 1;
     _buf_.c       = 4 * dataVal * _buf_.rel_var;
 

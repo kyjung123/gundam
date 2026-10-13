@@ -37,7 +37,7 @@ namespace JointProbability{
     // The penalty from MC statistics
     double penalty = 0;
     // Barlow-Beeston uses fractional uncertainty on MC, so sqrt(sum[w^2])/mc
-    double fractional = sqrt(mcuncert)/predVal;
+    double fractional = mcuncert/predVal;
     // -b/2a in quadratic equation
     double temp = predVal*fractional*fractional-1;
     // b^2 - 4ac in quadratic equation
